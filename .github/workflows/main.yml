@@ -1,0 +1,22 @@
+name: ci
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    name: tests (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+      fail-fast: true
+    steps:
+      - uses: actions/checkout@v2
+      - name: download deno
+        uses: denolib/setup-deno@v2
+        with:
+          deno-version: v1.2.0
+      - name: check format
+        run: deno fmt --check
+      - name: run tests
+        run: deno test --allow-read --allow-write
