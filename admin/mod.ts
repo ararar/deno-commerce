@@ -1,8 +1,8 @@
 // admin module endpoints
-import { Oak, Dejs } from "../deps.ts";
+import { oak, dejs } from "../deps.ts";
 
-const { Router } = Oak;
-const { renderFile } = Dejs;
+const { Router } = oak;
+const { renderFile } = dejs;
 const { Buffer, copy } = Deno;
 
 const THEME_NAME = "theme-one";
