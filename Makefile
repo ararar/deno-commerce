@@ -1,4 +1,4 @@
 # Development commands
 
 start:
-	deno run --allow-read --allow-net mod.ts
+	deno run --unstable --allow-read --allow-net mod.ts

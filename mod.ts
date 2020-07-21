@@ -21,6 +21,13 @@ const app = new oak.Application();
 app.use(adminRouter.routes());
 app.use(adminRouter.allowedMethods());
 
+// Send static content
+app.use(async (context) => {
+  await context.send({
+    root: `${Deno.cwd()}/static`,
+  });
+});
+
 app.use((ctx: oak.Context) => {
   ctx.response.body = "Hello Deno Commerce 🎉";
 });
