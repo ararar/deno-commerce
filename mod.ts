@@ -16,9 +16,8 @@ const { signal } = controller;
 
 app.addEventListener("listen", ({ hostname, port, secure }) => {
   console.log(
-    `Listening on: ${secure ? "https://" : "http://"}${
-      hostname ?? "localhost"
-    }:${port}`
+    `Listening on: ${secure ? "https://" : "http://"}${hostname ??
+      "localhost"}:${port}`,
   );
 });
 
