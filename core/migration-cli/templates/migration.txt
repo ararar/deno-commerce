@@ -1,0 +1,7 @@
+/** Runs on migrate */
+export const up: any = () => {
+};
+
+/** Runs on rollback */
+export const down: any = () => {
+};

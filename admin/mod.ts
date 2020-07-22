@@ -1,6 +1,9 @@
 // admin module endpoints
 import { oak, dejs } from "../deps.ts";
-import { existsSync, readJsonSync } from "https://deno.land/std/fs/mod.ts";
+import {
+  existsSync,
+  readJsonSync,
+} from "https://deno.land/std@0.61.0/fs/mod.ts";
 
 const { Router } = oak;
 const { renderFile } = dejs;

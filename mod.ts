@@ -1,5 +1,5 @@
 import { oak, mysql } from "./deps.ts";
-import { readJsonSync } from "https://deno.land/std/fs/mod.ts";
+import { readJsonSync } from "https://deno.land/std@0.61.0/fs/mod.ts";
 
 import { dbConfig } from "./config/site.ts";
 
