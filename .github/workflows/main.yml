@@ -17,6 +17,6 @@ jobs:
         with:
           deno-version: v1.2.0
       - name: check format
-        run: deno fmt --check
+        run: deno fmt --check admin config core migrations plugins scripts seeds deps.ts mod.ts mod_test.ts
       - name: run tests
         run: deno test --allow-read --allow-write
