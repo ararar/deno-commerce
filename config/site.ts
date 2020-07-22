@@ -7,6 +7,7 @@ const dbConfig = {
   username: env.DB_USER,
   db: env.DB_NAME,
   password: env.DB_PASSWORD,
+  port: 3306,
 };
 
 export {

@@ -15,6 +15,12 @@ docker-compose up
 
 # start the server
 make start
+
+# check formatting
+make fmt
+
+# unit test
+make test
 ```
 
 ### Available endpoints
