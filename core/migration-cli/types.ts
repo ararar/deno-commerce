@@ -56,7 +56,7 @@ export interface ClientI {
 
 /** Client config options. */
 export interface ClientOptions {
-  migrationFolder?: string;
-  seedFolder?: string;
+  migrationFolder: string;
+  seedFolder: string;
   [option: string]: any;
 }

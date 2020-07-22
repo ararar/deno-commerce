@@ -9,10 +9,10 @@ import {
   Info,
 } from "./types.ts";
 
-/** Helper function for path parsing. 
- * 
- * If the first element starts with `http` or `https` it will return the first element. 
- * Else, the path will be prefixed by `file://` and resolved. 
+/** Helper function for path parsing.
+ *
+ * If the first element starts with `http` or `https` it will return the first element.
+ * Else, the path will be prefixed by `file://` and resolved.
  */
 export const parsePath = (...path: string[]): string => {
   if (
@@ -50,10 +50,8 @@ export class AbstractClient {
     `DELETE FROM ${this.TABLE_MIGRATIONS} WHERE ${this.COL_FILE_NAME} = '${fileName}';`;
 
   constructor(options: ClientOptions) {
-    this.migrationFolder = resolve(
-      options?.migrationFolder || "./db/migrations",
-    );
-    this.seedFolder = resolve(options?.seedFolder || "./db/seeds");
+    this.migrationFolder = resolve(options.migrationFolder);
+    this.seedFolder = resolve(options.seedFolder);
 
     try {
       this.migrationFiles = Array.from(Deno.readDirSync(this.migrationFolder));
@@ -114,8 +112,9 @@ export class AbstractClient {
 
     amount = typeof amount === "number"
       ? amount
-      : (amount === "all" ? (allMigrations?.length ? allMigrations.length : 0)
-      : 1);
+      : amount === "all"
+      ? allMigrations?.length ? allMigrations.length : 0
+      : 1;
 
     console.log(amount, "Received amount to rollback");
     console.log(allMigrations, "Files to rollback");
@@ -137,8 +136,9 @@ export class AbstractClient {
 
   /** Runs the `run` method on seed files. Filters on the matcher. */
   async seed(matcher: string = ".+.ts", queryHandler: QueryHandler) {
-    const files = this.seedFiles.filter((el) =>
-      el.isFile && (el.name === matcher || new RegExp(matcher).test(el.name))
+    const files = this.seedFiles.filter(
+      (el) =>
+        el.isFile && (el.name === matcher || new RegExp(matcher).test(el.name)),
     );
 
     if (!files) {
