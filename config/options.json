@@ -1,0 +1,10 @@
+{
+  "theme": "theme-two",
+  "plugins": {
+    "plugin-one": {
+      "enabled": true,
+      "name": "plugin-one",
+      "root": "index.ts"
+    }
+  }
+}
