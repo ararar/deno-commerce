@@ -1,10 +1,10 @@
 # Development commands
 
 start:
-	deno run --unstable --allow-read --allow-net mod.ts
+	deno run --unstable --allow-read --allow-net --allow-write mod.ts
 
 start.reload:
-	deno run --reload --unstable --allow-read --allow-net mod.ts
+	deno run --reload --unstable --allow-read --allow-net --allow-write mod.ts
 
 fmt:
 	deno fmt admin config core migrations plugins scripts seeds deps.ts mod.ts mod_test.ts
