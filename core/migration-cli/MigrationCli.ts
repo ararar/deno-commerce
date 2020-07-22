@@ -8,17 +8,9 @@ const clientOptions = {
   seedFolder: `${Deno.cwd()}/seeds`,
 };
 
-const connectionOptions = {
-  database: dbConfig.db,
-  hostname: dbConfig.hostname,
-  port: dbConfig.port,
-  user: dbConfig.username,
-  password: dbConfig.password,
-};
-
 /** Makes the migration */
 async function makeMigration(migrationName: string = "migration") {
-  const client = new ClientMySQL(clientOptions, connectionOptions);
+  const client = new ClientMySQL(clientOptions, dbConfig);
 
   if (migrationName.length > AbstractClient.MAX_FILE_NAME_LENGTH - 13) {
     throw new Error(
@@ -47,7 +39,7 @@ async function makeMigration(migrationName: string = "migration") {
 
 /** Makes the seed */
 async function makeSeed(seedName: string = "seed") {
-  const client = new ClientMySQL(clientOptions, connectionOptions);
+  const client = new ClientMySQL(clientOptions, dbConfig);
 
   const fileName = `${seedName}.ts`;
 
@@ -77,5 +69,17 @@ if (import.meta.main) {
    * 4. rollback
    * 5. seed
    */
-  await makeSeed("add_new_column");
+
+  const client = new ClientMySQL(clientOptions, dbConfig);
+  try {
+    await client.prepare();
+    // const result = await client.migrate(1);
+    // const result = await client.rollback(1);
+    const result = await client.seed();
+    console.log(result);
+  } catch (err) {
+    console.error(err);
+  } finally {
+    client.close();
+  }
 }

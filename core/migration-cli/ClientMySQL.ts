@@ -30,14 +30,20 @@ export class ClientMySQL extends AbstractClient implements ClientI {
   }
 
   async prepare() {
-    await this.client.connect(this.clientOptions);
-    const queryResult = await this.query(this.QUERY_MIGRATION_TABLE_EXISTS);
+    try {
+      await this.client.connect(this.clientOptions);
+      const queryResult = await this.client.query(
+        this.QUERY_MIGRATION_TABLE_EXISTS,
+      );
 
-    const migrationTableExists = queryResult?.[0]?.length > 0;
+      const migrationTableExists = queryResult.length > 0;
 
-    if (!migrationTableExists) {
-      await this.query(this.QUERY_CREATE_MIGRATION_TABLE);
-      console.info("Database setup complete");
+      if (!migrationTableExists) {
+        await this.query(this.QUERY_CREATE_MIGRATION_TABLE);
+        console.info("Database setup complete");
+      }
+    } catch (err) {
+      console.log(err);
     }
   }
 

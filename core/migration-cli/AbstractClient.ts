@@ -28,7 +28,8 @@ export const parsePath = (...path: string[]): string => {
 export class AbstractClient {
   static readonly MAX_FILE_NAME_LENGTH = 100;
 
-  protected readonly TABLE_MIGRATIONS = "auth_migrations";
+  // TODO: Define migration table prefix
+  protected readonly TABLE_MIGRATIONS = "migrations";
   protected readonly COL_FILE_NAME = "file_name";
   protected readonly COL_CREATED_AT = "created_at";
   protected readonly REGEX_MIGRATION_FILE_NAME = /^\d{10,14}-.+.ts$/;
