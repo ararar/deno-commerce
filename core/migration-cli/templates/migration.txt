@@ -1,7 +1,7 @@
 /** Runs on migrate */
-export const up: any = () => {
+export const up = () => {
 };
 
 /** Runs on rollback */
-export const down: any = () => {
+export const down = () => {
 };
