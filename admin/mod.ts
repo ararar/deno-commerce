@@ -1,12 +1,16 @@
 // admin module endpoints
 import { oak, dejs } from "../deps.ts";
-import { existsSync } from "https://deno.land/std/fs/mod.ts";
+import { existsSync, readJsonSync } from "https://deno.land/std/fs/mod.ts";
 
 const { Router } = oak;
 const { renderFile } = dejs;
 const { Buffer, copy, cwd } = Deno;
 
-const THEME_NAME = "theme-two"; // TODO: Make this configurable
+// TODO: Assert and error checks
+const siteOptions = <Record<string, any>> readJsonSync(
+  `${Deno.cwd()}/config/options.json`,
+);
+const THEME_NAME = siteOptions.theme;
 
 const THEME_DIR = `${cwd()}/admin/themes/${THEME_NAME}`;
 const DEFAULT_VIEW_DIR = `${cwd()}/admin/views`;
