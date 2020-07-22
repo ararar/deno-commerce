@@ -9,9 +9,7 @@ const clientOptions = {
 };
 
 /** Makes the migration */
-async function makeMigration(migrationName: string = "migration") {
-  const client = new ClientMySQL(clientOptions, dbConfig);
-
+async function makeMigration(client: ClientMySQL, migrationName: string = "migration") {
   if (migrationName.length > AbstractClient.MAX_FILE_NAME_LENGTH - 13) {
     throw new Error(
       `Migration name can't be longer than ${AbstractClient
@@ -38,9 +36,7 @@ async function makeMigration(migrationName: string = "migration") {
 }
 
 /** Makes the seed */
-async function makeSeed(seedName: string = "seed") {
-  const client = new ClientMySQL(clientOptions, dbConfig);
-
+async function makeSeed(client: ClientMySQL, seedName: string = "seed") {
   const fileName = `${seedName}.ts`;
 
   if (client?.seedFiles.find((el) => el.name === seedName)) {
@@ -60,29 +56,60 @@ async function makeSeed(seedName: string = "seed") {
   console.info(`Created seed ${fileName} at ${client!.seedFolder}`);
 }
 
+/**
+  Available Flags
+
+  -h, --help: display help message
+  -c, --create: create a migration file with given name
+  -cs, --create-seed: create a seed file with given name
+  -m, --migrate: migrate by amount
+  -r, --rollback: rollback by amount
+  -s, --seed: seed with files in seeds folder
+ */
 if (import.meta.main) {
-  // TODO: cli
-
-  // flags
-  // -h, --help: display help message
-  // -c, --create: create a migration file with given name
-  // -cs, --create-seed: create a seed file with given name
-  // -m, --migrate: migrate by amount
-  // -r, --rollback: rollback by amount
-  // -s, --seed: seed with files in seeds folder
-
   const { parse } = flags;
   const { args } = Deno;
   const parsedArgs = parse(args);
-  console.log(parsedArgs);
 
   const client = new ClientMySQL(clientOptions, dbConfig);
   try {
     await client.prepare();
-    // const result = await client.migrate(1);
-    // const result = await client.rollback(1);
-    const result = await client.seed();
-    console.log(result);
+
+    if (parsedArgs.migrate || parsedArgs.m) {
+      await client.migrate(1);
+    } else if (parsedArgs.rollback || parsedArgs.r) {
+      await client.rollback(1);
+    } else if (parsedArgs.seed || parsedArgs.s) {
+      await client.seed();
+    } else if (parsedArgs.create || parsedArgs.c) {
+      const migrationName = Deno.env.get("name");
+      await makeMigration(client, migrationName);
+    }else if (parsedArgs["create-seed"] || parsedArgs.cs) {
+      const seedName = Deno.env.get("name");
+      await makeSeed(client, seedName);
+    }else if (parsedArgs.help || parsedArgs.h) {
+      console.log(`
+  Available Migration Options
+
+  # display help message
+  make migration.help
+
+  # create a migration file
+  make generate.migration name=<name>
+
+  # create a seed file
+  make generate.seed name=<name>
+
+  # apply migrations
+  make db.migrate
+
+  # revert migrations
+  make db.rollback
+
+  # apply seed files
+  make db.seed
+      `);
+    }
   } catch (err) {
     console.error(err);
   } finally {
