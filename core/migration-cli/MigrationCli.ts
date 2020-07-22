@@ -33,11 +33,13 @@ async function makeMigration(migrationName: string = "migration") {
 
   await Deno.mkdir(client!.migrationFolder, { recursive: true });
 
-  const responseFile = fs.readFileStrSync(`${Deno.cwd()}/core/migration-cli/templates/migration.txt`);
+  const responseFile = fs.readFileStrSync(
+    `${Deno.cwd()}/core/migration-cli/templates/migration.txt`,
+  );
 
   await Deno.writeTextFile(
     `${client!.migrationFolder}/${fileName}`,
-    responseFile
+    responseFile,
   );
 
   console.info(`Created migration ${fileName} at ${client!.migrationFolder}`);
@@ -46,9 +48,9 @@ async function makeMigration(migrationName: string = "migration") {
 /** Makes the seed */
 async function makeSeed(seedName: string = "seed") {
   const client = new ClientMySQL(clientOptions, connectionOptions);
-  
+
   const fileName = `${seedName}.ts`;
-  
+
   if (client?.seedFiles.find((el) => el.name === seedName)) {
     console.info(`Seed with name '${seedName}' already exists.`);
   }
@@ -57,7 +59,9 @@ async function makeSeed(seedName: string = "seed") {
 
   await Deno.mkdir(client!.seedFolder, { recursive: true });
 
-  const responseFile = fs.readFileStrSync(`${Deno.cwd()}/core/migration-cli/templates/seed.txt`);
+  const responseFile = fs.readFileStrSync(
+    `${Deno.cwd()}/core/migration-cli/templates/seed.txt`,
+  );
 
   await Deno.writeTextFile(`${client!.seedFolder}/${fileName}`, responseFile);
 
