@@ -6,8 +6,8 @@ start:
 start-with-reload:
 	deno run --reload --unstable --allow-read --allow-net mod.ts
 
-fmt-check:
+fmt:
 	deno fmt --check admin config core migrations plugins scripts seeds deps.ts mod.ts mod_test.ts
 
-unit-test:
+test:
 	deno test --allow-read --allow-write

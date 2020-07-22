@@ -1,6 +1,6 @@
 import { AbstractClient } from "./AbstractClient.ts";
 import { ClientMySQL } from "./ClientMySQL.ts";
-import { fs } from "../../deps.ts";
+import { fs, flags } from "../../deps.ts";
 import { dbConfig } from "../../config/site.ts";
 
 const clientOptions = {
@@ -61,14 +61,20 @@ async function makeSeed(seedName: string = "seed") {
 }
 
 if (import.meta.main) {
-  // TODO: Cli should receive options and do the following
-  /**
-   * 1. makeMigration
-   * 2. makeSeed
-   * 3. migrate up and down
-   * 4. rollback
-   * 5. seed
-   */
+  // TODO: cli
+
+  // flags
+  // -h, --help: display help message
+  // -c, --create: create a migration file with given name
+  // -cs, --create-seed: create a seed file with given name
+  // -m, --migrate: migrate by amount
+  // -r, --rollback: rollback by amount
+  // -s, --seed: seed with files in seeds folder
+
+  const { parse } = flags;
+  const { args } = Deno;
+  const parsedArgs = parse(args);
+  console.log(parsedArgs);
 
   const client = new ClientMySQL(clientOptions, dbConfig);
   try {
