@@ -68,7 +68,9 @@ app.use(async (context, next) => {
   const rt = context.response.headers.get("X-Response-Time");
 
   const message =
-    `${context.request.method} ${context.request.url.pathname} - ${String(rt)}\n`;
+    `${context.request.method} ${context.request.url.pathname} - ${
+      String(rt)
+    }\n`;
 
   const logsFolder = `${Deno.cwd()}/logs`;
   const fileName = `${new Date().toDateString().split(" ").join("-")}.txt`;
