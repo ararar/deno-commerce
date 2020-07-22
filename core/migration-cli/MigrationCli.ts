@@ -9,7 +9,10 @@ const clientOptions = {
 };
 
 /** Makes the migration */
-async function makeMigration(client: ClientMySQL, migrationName: string = "migration") {
+async function makeMigration(
+  client: ClientMySQL,
+  migrationName: string = "migration",
+) {
   if (migrationName.length > AbstractClient.MAX_FILE_NAME_LENGTH - 13) {
     throw new Error(
       `Migration name can't be longer than ${AbstractClient
@@ -84,10 +87,10 @@ if (import.meta.main) {
     } else if (parsedArgs.create || parsedArgs.c) {
       const migrationName = Deno.env.get("name");
       await makeMigration(client, migrationName);
-    }else if (parsedArgs["create-seed"] || parsedArgs.cs) {
+    } else if (parsedArgs["create-seed"] || parsedArgs.cs) {
       const seedName = Deno.env.get("name");
       await makeSeed(client, seedName);
-    }else if (parsedArgs.help || parsedArgs.h) {
+    } else if (parsedArgs.help || parsedArgs.h) {
       console.log(`
   Available Migration Options
 
