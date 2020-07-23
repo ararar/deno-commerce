@@ -1,0 +1,25 @@
+# only exclude core admin files
+# themes should be in git
+admin/*
+!admin/themes
+
+config/
+core/
+docs/
+scripts/
+migrations/
+seeds/
+static/
+
+# only exclude core plugins
+# version custom plugins
+# plugins/
+
+Makefile
+
+logs/
+
+deps.ts
+mod.ts
+mod_test.ts
+.env

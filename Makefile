@@ -1,5 +1,7 @@
 # Development commands
 
+# TODO: Move commands to deno commerce cli
+
 start:
 	deno run --unstable --allow-read --allow-net --allow-write mod.ts
 
@@ -32,3 +34,6 @@ db.seed:
 
 migration.help:
 	deno run --unstable --allow-read --allow-write --allow-net core/migration-cli/mod.ts --help
+
+install:
+	deno install --allow-env --allow-net --allow-read --allow-write --allow-run -f -n deno_commerce bin/deno_commerce.ts
