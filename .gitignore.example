@@ -17,3 +17,8 @@ plugins/
 Makefile
 
 logs/
+
+deps.ts
+mod.ts
+mod_test.ts
+.env
