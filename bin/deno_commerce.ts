@@ -61,7 +61,6 @@ if (import.meta.main) {
     const removeExampleConfigs = Deno.run({
       cmd: [
         "rm",
-        `${projectLocation}/.env.example`,
         `${projectLocation}/.gitignore.example`,
       ],
     });
