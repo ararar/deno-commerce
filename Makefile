@@ -1,5 +1,7 @@
 # Development commands
 
+# TODO: Move commands to deno commerce cli
+
 start:
 	deno run --unstable --allow-read --allow-net --allow-write mod.ts
 

@@ -1,6 +1,7 @@
 # only exclude core admin files
 # themes should be in git
-admin/
+admin/*
+!admin/themes
 
 config/
 core/
@@ -11,8 +12,8 @@ seeds/
 static/
 
 # only exclude core plugins
-# user should be able to version plugins
-plugins/
+# version custom plugins
+# plugins/
 
 Makefile
 

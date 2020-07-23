@@ -8,41 +8,37 @@ import { sh } from "https://deno.land/x/drake@v1.2.5/lib.ts";
 
 // TODO: Cli will need a lot of refactoring!!!
 
-/**
- * Args
- * --from=$HOME/.../<deno-commerce> | <deno-commerce-git-url>
- * --to=$HOME/.../<project-name>
- */
 if (import.meta.main) {
   const { args } = Deno;
 
   const parsedArgs = parse(args);
+  const commandName = parsedArgs._[0];
 
-  const cloneLocation =
-    parsedArgs.from || "https://github.com/oozou/deno-commerce.git";
-  const projectLocation = parsedArgs.to;
+  if (commandName === "create") {
+    const cloneLocation =
+      parsedArgs.from || "https://github.com/oozou/deno-commerce.git";
+    const projectLocation = parsedArgs.to;
 
-  // clone project
-  const cloneCmd = Deno.run({
-    cmd: [
-      "git",
-      "clone",
-      "--single-branch",
-      "--branch",
-      "feature/deno-commerce-cli",
-      cloneLocation,
-      projectLocation,
-    ],
-  });
-  const cloneCmdResult = await cloneCmd.status();
-  if (cloneCmdResult.code) {
-    console.error("clone not succeeded");
-  }
-  console.error("clone succeeded");
-  cloneCmd.close();
+    // clone project
+    const cloneCmd = Deno.run({
+      cmd: [
+        "git",
+        "clone",
+        "--single-branch",
+        "--branch",
+        "feature/deno-commerce-cli",
+        cloneLocation,
+        projectLocation,
+      ],
+    });
+    const cloneCmdResult = await cloneCmd.status();
+    if (cloneCmdResult.code) {
+      throw new Error("clone not succeeded");
+    }
+    cloneCmd.close();
 
-  // Exclude development files and folders
-  await sh(`
+    // Exclude development files and folders
+    await sh(`
     rm -rf \
       ${projectLocation}/.git \
       ${projectLocation}/.github \
@@ -53,22 +49,43 @@ if (import.meta.main) {
       ${projectLocation}/README.md
   `);
 
-  // copy env and git with init
-  await sh([
-    `git init ${projectLocation}`,
-    `cp ${projectLocation}/.env.example ${projectLocation}/.env`,
-    `cp ${projectLocation}/.gitignore.example ${projectLocation}/.gitignore`,
-    `echo "# Project" > ${projectLocation}/README.md`,
-  ]);
+    // copy env and git with init
+    await sh([
+      `git init ${projectLocation}`,
+      `cp ${projectLocation}/.env.example ${projectLocation}/.env`,
+      `cp ${projectLocation}/.gitignore.example ${projectLocation}/.gitignore`,
+      `echo "# Project" > ${projectLocation}/README.md`,
+    ]);
 
-  // remove example configs
-  const removeExampleConfigs = Deno.run({
-    cmd: [
-      "rm",
-      `${projectLocation}/.env.example`,
-      `${projectLocation}/.gitignore.example`,
-    ],
-  });
-  await removeExampleConfigs.status();
-  removeExampleConfigs.close();
+    // remove example configs
+    const removeExampleConfigs = Deno.run({
+      cmd: [
+        "rm",
+        `${projectLocation}/.env.example`,
+        `${projectLocation}/.gitignore.example`,
+      ],
+    });
+    await removeExampleConfigs.status();
+    removeExampleConfigs.close();
+  } else if (commandName === "update") {
+    // TODO:
+    throw new Error("Not implemented!!!")
+  } else {
+    console.log(`
+  Deno Commerce Cli
+
+  Examples
+    $HOME/.deno/bin/deno_commerce create --from=https://github.com/oozou/deno-commerce.git --to=$HOME/Documents/project1
+    $HOME/.deno/bin/deno_commerce update --location=$HOME/Documents/project1
+
+  Args
+    (create|update)
+
+  create
+    --from=$HOME/.../<deno-commerce> | <deno-commerce-git-url>
+    --to=$HOME/.../<project-name>
+  update
+    --location=$HOME/.../<project-name>
+    `);
+  }
 }
