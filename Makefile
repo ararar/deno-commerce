@@ -32,3 +32,8 @@ db.seed:
 
 migration.help:
 	deno run --unstable --allow-read --allow-write --allow-net core/migration-cli/mod.ts --help
+
+install:
+	deno install --allow-net --allow-read --allow-run -f -n serve bin/deno_commerce.ts
+
+#	deno run --allow-net --allow-read --allow-write --allow-run bin/deno_commerce.ts --from= --to=
