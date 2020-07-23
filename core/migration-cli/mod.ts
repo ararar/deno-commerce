@@ -64,7 +64,7 @@ async function makeSeed(client: ClientMySQL, seedName: string = "seed") {
 
   -h, --help: display help message
   -c, --create: create a migration file with given name
-  -cs, --create-seed: create a seed file with given name
+  -d, --create-seed: create a seed file with given name
   -m, --migrate: migrate by amount
   -r, --rollback: rollback by amount
   -s, --seed: seed with files in seeds folder
@@ -87,7 +87,7 @@ if (import.meta.main) {
     } else if (parsedArgs.create || parsedArgs.c) {
       const migrationName = Deno.env.get("name");
       await makeMigration(client, migrationName);
-    } else if (parsedArgs["create-seed"] || parsedArgs.cs) {
+    } else if (parsedArgs["create-seed"] || parsedArgs.d) {
       const seedName = Deno.env.get("name");
       await makeSeed(client, seedName);
     } else if (parsedArgs.help || parsedArgs.h) {

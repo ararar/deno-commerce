@@ -1,5 +1,10 @@
-// deno_commerce cli tool for scaffold and updates to project
+/**
+ * deno_commerce cli have following functions:
+ *  1. create a new project
+ *  2. update an existing project
+ */
 import { parse } from "https://deno.land/std@0.61.0/flags/mod.ts";
+import { sh } from "https://deno.land/x/drake@v1.2.5/lib.ts";
 
 // TODO: Cli will need a lot of refactoring!!!
 
@@ -22,9 +27,9 @@ if (import.meta.main) {
     cmd: [
       "git",
       "clone",
-      // "--single-branch",
-      // "--branch",
-      // "feature/deno-commerce-cli",
+      "--single-branch",
+      "--branch",
+      "feature/deno-commerce-cli",
       cloneLocation,
       projectLocation,
     ],
@@ -36,52 +41,25 @@ if (import.meta.main) {
   console.error("clone succeeded");
   cloneCmd.close();
 
-  // Exclude cmd
-  const excludeResourceCmd = Deno.run({
-    cmd: [
-      "rm",
-      "-rf",
-      `${projectLocation}/.git`,
-      `${projectLocation}/.github`,
-      `${projectLocation}/.vscode`,
-      `${projectLocation}/.gitignore`,
-      `${projectLocation}/bin`,
-      `${projectLocation}/LICENSE`,
-      `${projectLocation}/README.md`,
-    ],
-  });
-  await excludeResourceCmd.status();
-  excludeResourceCmd.close();
+  // Exclude development files and folders
+  await sh(`
+    rm -rf \
+      ${projectLocation}/.git \
+      ${projectLocation}/.github \
+      ${projectLocation}/.vscode \
+      ${projectLocation}/.gitignore \
+      ${projectLocation}/bin \
+      ${projectLocation}/LICENSE \
+      ${projectLocation}/README.md
+  `);
 
   // copy env and git with init
-  const gitInit = Deno.run({
-    cmd: ["git", "init", `${projectLocation}`],
-  });
-  const copyEnv = Deno.run({
-    cmd: ["cp", `${projectLocation}/.env.example`, `${projectLocation}/.env`],
-  });
-  const copyGitIgnore = Deno.run({
-    cmd: [
-      "cp",
-      `${projectLocation}/.gitignore.example`,
-      `${projectLocation}/.gitignore`,
-    ],
-  });
-  const touchReadme = Deno.run({
-    cmd: ["echo", '"# Project"', ">", "README.md"],
-  });
-
-  const result = await Promise.all([
-    gitInit.status(),
-    copyEnv.status(),
-    copyGitIgnore.status(),
-    touchReadme.status(),
+  await sh([
+    `git init ${projectLocation}`,
+    `cp ${projectLocation}/.env.example ${projectLocation}/.env`,
+    `cp ${projectLocation}/.gitignore.example ${projectLocation}/.gitignore`,
+    `echo "# Project" > ${projectLocation}/README.md`,
   ]);
-
-  gitInit.close();
-  copyEnv.close();
-  copyGitIgnore.close();
-  touchReadme.close();
 
   // remove example configs
   const removeExampleConfigs = Deno.run({
